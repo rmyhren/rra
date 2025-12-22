@@ -1,0 +1,14 @@
+# playbooks/patch.yml
+- name: Patch RHEL servers safely
+  hosts: all
+  serial: 1
+  gather_facts: true
+
+
+  pre_tasks:
+  - name: Show host being patched
+    debug:
+      msg: "Patching {{ inventory_hostname }}"
+
+  roles:
+    - patching
