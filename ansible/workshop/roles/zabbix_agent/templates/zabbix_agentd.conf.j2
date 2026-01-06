@@ -1,0 +1,33 @@
+# This is a configuration file for Zabbix agent daemon (Unix)
+# Managed by Ansible - Do not edit manually
+
+# Passive checks related
+Server={{ zabbix_server }}
+
+# Active checks related
+ServerActive={{ zabbix_server_active }}
+
+# Hostname
+Hostname={{ zabbix_agent_hostname }}
+
+# Listen port for passive checks
+ListenPort={{ zabbix_agent_port }}
+
+# Listen IP address
+ListenIP={{ zabbix_agent_listenip }}
+
+# PID file location
+PidFile=/var/run/zabbix/zabbix_agentd.pid
+
+# Log file location
+LogFile=/var/log/zabbix/zabbix_agentd.log
+
+# Log file size in MB
+LogFileSize=0
+
+# Enable remote commands
+EnableRemoteCommands=0
+
+# Log level (0-5)
+DebugLevel=3
+

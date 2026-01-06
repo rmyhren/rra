@@ -1,0 +1,22 @@
+---
+- name: Create a test file
+  hosts: test
+  become: yes
+  tasks:
+    - name: Create file with content
+      copy:
+        content: "This file was created by Ansible\n"
+        dest: /tmp/ansible-test.txt
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Verify file exists
+      stat:
+        path: /tmp/ansible-test.txt
+      register: file_status
+
+    - name: Display file status
+      debug:
+        msg: "File exists: {{ file_status.stat.exists }}"
+

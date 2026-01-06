@@ -17,7 +17,7 @@ You find it in ansible/production
 
 **Step-by-step:**
 
-1. Navigate to the workshopp directory:
+1. Navigate to the workshop directory:
    ```bash
    cd ansible/workshop
    ```
@@ -53,9 +53,9 @@ You find it in ansible/production
 
 **Step-by-step:**
 
-1. Navigate to the production directory (if not already there):
+1. Navigate to the workshop directory (if not already there):
    ```bash
-   cd ansible/production
+   cd ansible/workshop
    ```
 
 2. Create a playbook file called `playbooks/create_file.yml`:
@@ -110,9 +110,9 @@ You find it in ansible/production
 
 **Step-by-step:**
 
-1. Navigate to the production directory (if not already there):
+1. Navigate to the workshop directory (if not already there):
    ```bash
-   cd ansible/production
+   cd ansible/workshop
    ```
 
 2. Review or create the playbook file `playbooks/patch.yml`:
@@ -177,6 +177,67 @@ ansible-playbook -i inventories/test/hosts.ini playbooks/patch.yml --limit test
 
 ### Exercise 4 - Deploy Zabbix agent
 
+**Description:** This exercise demonstrates how to use Ansible roles to deploy and configure the Zabbix monitoring agent on remote servers. You'll learn about role structure, variables, templates, and handlers to create reusable automation.
+
+**Task:**
+* Install the Zabbix agent package on test servers
+* Configure the agent with the correct Zabbix server address
+* Deploy a configuration file using Jinja2 templates
+* Ensure the service is enabled and running
+
+**Step-by-step:**
+
+1. Navigate to the workshop directory (if not already there):
+   ```bash
+   cd ansible/workshop
+   ```
+
+2. Review the role structure in `roles/zabbix_agent/`:
+   - `defaults/main.yml` - Default variables
+   - `tasks/main.yml` - Main installation and configuration tasks
+   - `templates/zabbix_agentd.conf.j2` - Configuration template
+   - `handlers/main.yml` - Service restart handler
+
+3. Set variables in `roles/zabbix_agent/defaults/main.yml`:
+   ```yaml
+   ---
+   zabbix_server: "10.0.0.100"
+   zabbix_server_active: "10.0.0.100"
+   zabbix_agent_hostname: "{{ ansible_hostname }}"
+   ```
+
+4. Create a playbook called `playbooks/deploy_zabbix.yml`:
+   ```yaml
+   ---
+   - name: Deploy Zabbix Agent
+     hosts: test
+     become: yes
+     roles:
+       - zabbix_agent
+   ```
+
+5. Run the playbook:
+   ```bash
+   ansible-playbook -i inventories/test/hosts.ini playbooks/deploy_zabbix.yml
+   ```
+
+6. Verify the Zabbix agent is running:
+   ```bash
+   ansible -i inventories/test/hosts.ini test -m command -a "systemctl status zabbix-agent"
+   ```
+
+7. Override variables for specific environments:
+   ```bash
+   ansible-playbook -i inventories/test/hosts.ini playbooks/deploy_zabbix.yml -e "zabbix_server=10.0.1.50"
+   ```
+
+**Key concepts:**
+* **Roles** provide reusable, structured automation (tasks, variables, templates, handlers)
+* **Templates** use Jinja2 to dynamically generate configuration files
+* **Handlers** ensure services are restarted only when configuration changes
+* **Variables** can be defined in defaults and overridden at runtime
+* Role structure follows Ansible best practices for maintainability
+
 ### Additional tasks - Setup inventory from VMware automatically
 This is the documentation for setting up inventory from VMware automatically
 https://github.com/ansible-collections/vmware.vmware
@@ -185,14 +246,3 @@ https://github.com/ansible-collections/vmware.vmware
 
 
 
-### Task:
-* Run patching only against test servers
-* Patch only one server at a time
-* Reboot the server only if required
-
-### Answer:
-* Use serial: 1
-* Use the dnf module
-* Use needs-restarting -r to detect reboot requirement
-
-```ansible-playbook -i inventories/test/hosts.ini playbooks/patch.yml --limit test```
