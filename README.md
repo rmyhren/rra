@@ -6,7 +6,12 @@ You find it in ansible/production
 
 # Test code / workshops
 
-## Exercise 1 – Safe Patching
+## Exercise 1 - Run a command on another server
+
+## Exercise 2 – Create a file 
+
+
+## Exercise 3 – Safe Patching
 
 Description: This exercise teaches safe, production-grade operating system patching on RHEL servers using Ansible. The goal is to ensure that updates are applied in a controlled manner, avoiding service disruption and alert noise. Participants learn how to limit blast radius, detect when a reboot is actually required, and rely on automation rather than manual intervention.
 
