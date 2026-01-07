@@ -24,17 +24,18 @@ You find it in ansible/production
 
 2. Run a simple command on all test servers:
    ```bash
-   ansible -i inventories/test/hosts.ini test -m command -a "uptime"
+   ansible --ask-pass -i inventories/test/hosts.ini test -m command -a "uptime"
    ```
+   If you've never connected to these servers before, you may need to prefix the command with ANSIBLE_HOST_KEY_CHECKING=False the first time you connect.
 
 3. Check disk usage:
    ```bash
-   ansible -i inventories/test/hosts.ini test -m command -a "df -h"
+   ansible --ask-pass -i inventories/test/hosts.ini test -m command -a "df -h"
    ```
 
 4. Get system information:
    ```bash
-   ansible -i inventories/test/hosts.ini test -m shell -a "uname -a"
+   ansible --ask-pass -i inventories/test/hosts.ini test -m shell -a "uname -a"
    ```
 
 **Key concepts:**

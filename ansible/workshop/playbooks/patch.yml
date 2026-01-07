@@ -1,14 +1,30 @@
-# playbooks/patch.yml
-- name: Patch RHEL servers safely
-  hosts: all
+---
+- name: Safe patching with controlled reboot
+  hosts: test
   serial: 1
-  gather_facts: true
+  become: yes
+  tasks:
+    - name: Update all packages
+      dnf:
+        name: "*"
+        state: latest
+      register: dnf_output
 
+    - name: Check if reboot is required
+      command: needs-restarting -r
+      register: reboot_required
+      failed_when: false
+      changed_when: reboot_required.rc == 1
 
-  pre_tasks:
-  - name: Show host being patched
-    debug:
-      msg: "Patching {{ inventory_hostname }}"
+    - name: Reboot if required
+      reboot:
+        msg: "Rebooting after patching"
+        reboot_timeout: 600
+      when: reboot_required.rc == 1
 
-  roles:
-    - patching
+    - name: Wait for system to be available
+      wait_for_connection:
+        delay: 30
+        timeout: 300
+      when: reboot_required.rc == 1
+
