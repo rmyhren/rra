@@ -1,0 +1,18 @@
+# roles/patching/tasks/main.yml
+- name: Update all packages (RHEL)
+  dnf:
+    name: "*"
+    state: latest
+    update_cache: true
+
+- name: Check if reboot is required (RHEL)
+  command: needs-restarting -r
+  register: reboot_check
+  failed_when: reboot_check.rc > 1
+  changed_when: false
+
+- name: Reboot if required
+  reboot:
+    msg: "Reboot initiated by Ansible after patching"
+    reboot_timeout: 900
+  when: reboot_check.rc == 1
