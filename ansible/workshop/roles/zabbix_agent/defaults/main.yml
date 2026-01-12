@@ -2,7 +2,7 @@
 # Default variables for zabbix_agent role
 zabbix_server: "10.0.0.100"
 zabbix_server_active: "10.0.0.100"
-zabbix_agent_hostname: "{{ ansible_hostname }}"
+zabbix_agent_hostname: "{{ ansible_facts['hostname'] }}"
 zabbix_agent_port: 10050
 zabbix_agent_listenip: "0.0.0.0"
 
