@@ -1,0 +1,9 @@
+
+- name: Delete file if it exists 
+  hosts: test
+  vars:
+    rra_test_file: /tmp/ansible-test.txt
+  become: yes 
+  ansible.builtin.file:
+    path: "{{ rra_test_file }}"
+  state: absent
