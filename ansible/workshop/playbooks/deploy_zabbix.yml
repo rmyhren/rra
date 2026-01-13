@@ -1,6 +1,6 @@
 ---
 - name: Deploy Zabbix Agent
-  hosts: test
+  hosts: ansible_servers
   become: yes
   roles:
     - zabbix_agent

@@ -14,7 +14,11 @@
 - name: Deploy Zabbix agent configuration
   template:
     src: zabbix_agentd.conf.j2
+<<<<<<< HEAD
     dest: "{{ zabbix_agent_conf }}"
+=======
+    dest: /etc/zabbix_agentd.conf
+>>>>>>> 824d7cd820688a1e7db000c09682a85e0cc14306
     owner: root
     group: root
     mode: '0644'
