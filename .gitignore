@@ -1,2 +1,4 @@
 /ansible/workshop/inventories/nta
+/ansible/workshop/inventories/rra
 /ansible/production/inventories/nta
+/ansible/production/inventories/rra
