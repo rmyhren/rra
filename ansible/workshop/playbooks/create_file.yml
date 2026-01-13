@@ -1,19 +1,21 @@
 ---
 - name: Create a test file
   hosts: test
+  vars:
+    rra_test_file: /tmp/ansible-test.txt
   become: yes
   tasks:
     - name: Create file with content
       copy:
         content: "This file was created by Ansible\n"
-        dest: /tmp/ansible-test.txt
+        dest: "{{ rra_test_file }}"
         owner: root
         group: root
         mode: '0644'
 
     - name: Verify file exists
       stat:
-        path: /tmp/ansible-test.txt
+        path: "{{ rra_test_file }}"
       register: file_status
 
     - name: Display file status
